@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PhpVariableHardUsage;
+namespace Smeghead\PhpVariableHardUsage;
 
 class Command
 {
-    public function run($argv)
+    public function run(array $argv): void
     {
         if (count($argv) < 2) {
             $this->printHelp();
@@ -23,7 +23,7 @@ class Command
         $analyzer->analyze($filePath);
     }
 
-    private function printHelp()
+    private function printHelp(): void
     {
         echo "Usage: php bin/php-variable-hard-usage [source_file]\n";
         echo "Options:\n";

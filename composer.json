@@ -1,0 +1,39 @@
+{
+    "name": "smeghead/php-variable-hard-usage",
+    "description": "A CLI tool that parses the PHP variable hard usage.",
+    "type": "library",
+    "keywords": [
+        "variable usage"
+    ],
+    "require": {
+        "php" : ">=8.0",
+        "nikic/php-parser": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^1.10"
+    },
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Smeghead\\PhpVariableHardUsage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "smeghead",
+            "email": "smeghead7@gmail.com"
+        }
+    ],
+    "scripts": {
+        "test": [
+            "php vendor/phpunit/phpunit/phpunit --colors test/"
+        ],
+        "phpstan": [
+            "vendor/bin/phpstan analyse"
+        ]
+    },
+    "bin": [
+        "bin/php-variable-hard-usage"
+    ]
+}

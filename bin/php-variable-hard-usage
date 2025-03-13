@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use PhpVariableHardUsage\Command;
+use Smeghead\PhpVariableHardUsage\Command;
 
 $command = new Command();
 $command->run($argv);

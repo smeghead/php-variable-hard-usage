@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpVariableHardUsage;
 
-class Command
+final class Command
 {
     public function run(array $argv): void
     {

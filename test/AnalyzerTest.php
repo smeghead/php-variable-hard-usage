@@ -8,10 +8,12 @@ use Smeghead\PhpVariableHardUsage\Core\AnalysisResult;
 
 class AnalyzerTest extends TestCase
 {
+    private string $fixtureDir = __DIR__ . '/fixtures';
+
     public function testAnalyze(): void
     {
         $analyzer = new Analyzer();
-        $content = '<?php $a = 1; $b = 2; $a = 3; ?>';
+        $content = file_get_contents($this->fixtureDir . '/function.php');
         $result = $analyzer->analyze($content);
 
         $this->assertInstanceOf(AnalysisResult::class, $result);

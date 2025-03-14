@@ -12,7 +12,7 @@ use PhpParser\NodeVisitor\FindingVisitor;
 use PhpParser\Parser;
 use Smeghead\PhpVariableHardUsage\Core\Exception\ParseFailedException;
 
-final class Analyzer
+final class VariableParser
 {
     private Parser $parser;
 
@@ -49,25 +49,24 @@ final class Analyzer
         return $variableVisitor->getFoundNodes();
     }
 
-    public function analyze(string $content): AnalysisResult
+    public function parse(string $content): ParseResult
     {
         $stmts = $this->parser->parse($content);
         if ($stmts === null) {
             throw new ParseFailedException();
         }
 
-        $nodeDumper = new NodeDumper();
-
         $foundFunctions = $this->getFunctions($stmts);
 
+        $functions = [];
         foreach ($foundFunctions as $foundFunction) {
-            echo $nodeDumper->dump($foundFunction), "\n";
             $variables = $this->getVariables($foundFunction);
-            echo "Found function: ", $foundFunction->name->name, "\n";
+            $func = new Func($foundFunction->name->name);
             foreach ($variables as $variable) {
-                echo "Found variable: ", $variable->name, "\n";
+                $func->addVariable(new VarReference($variable->name, $variable->getLine()));
             }
+            $functions[] = $func;
         }
-        return new AnalysisResult(0, 0, 0, []);
+        return new ParseResult($functions);
     }
 }

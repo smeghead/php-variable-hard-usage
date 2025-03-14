@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Smeghead\PhpVariableHardUsage\Core\Exception;
+namespace Smeghead\PhpVariableHardUsage\Parse\Exception;
 
 use Exception;
 

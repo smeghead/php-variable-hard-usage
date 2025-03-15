@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Smeghead\PhpVariableHardUsage;
 
 use Smeghead\PhpVariableHardUsage\Analyze\VariableAnalyzer;
-use Smeghead\PhpVariableHardUsage\Core\Analyzer;
 use Smeghead\PhpVariableHardUsage\Parse\VariableParser;
 
 final class Command
 {
+    /**
+     * @param list<string> $argv
+     */
     public function run(array $argv): void
     {
         if (count($argv) < 2) {
@@ -24,7 +26,12 @@ final class Command
         }
 
         $parser = new VariableParser();
-        $parseResult = $parser->parse(file_get_contents($filePath));
+        $content =file_get_contents($filePath);
+        if ($content === false) {
+            echo "Failed to read file: $filePath\n";
+            return;
+        }
+        $parseResult = $parser->parse($content);
         $analyzer = new VariableAnalyzer($parseResult->functions);
         $result = $analyzer->analyze();
         echo $result->format();

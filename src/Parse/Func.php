@@ -15,7 +15,7 @@ final class Func
     }
 
     /**
-     * @param array<VarReference> $variables
+     * @return array<VarReference>
      */
     public function getVariables(): array
     {

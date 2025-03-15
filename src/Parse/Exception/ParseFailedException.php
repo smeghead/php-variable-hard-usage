@@ -8,8 +8,8 @@ use Exception;
 
 final class ParseFailedException extends Exception
 {
-    public function __construct($message = "Parsing failed", $code = 0, Exception $previous = null)
+    public function __construct(string $message = "Parsing failed", int $code = 0)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code);
     }
 }

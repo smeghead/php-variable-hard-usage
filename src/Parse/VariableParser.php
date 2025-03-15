@@ -7,6 +7,7 @@ namespace Smeghead\PhpVariableHardUsage\Parse;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeDumper;
 use PhpParser\NodeVisitor\FindingVisitor;
@@ -24,7 +25,7 @@ final class VariableParser
 
     /**
      * @param list<Stmt> $stmt
-     * @return List<Function_>
+     * @return list<Function_>
      */
     private function getFunctions(array $stmt): array
     {
@@ -35,7 +36,7 @@ final class VariableParser
         $traverser->addVisitor($functionVisitor);
         $traverser->traverse($stmt);
 
-        return $functionVisitor->getFoundNodes();
+        return $functionVisitor->getFoundNodes(); // @phpstan-ignore-line
     }
 
     /**
@@ -51,7 +52,7 @@ final class VariableParser
         $traverser->addVisitor($variableVisitor);
         $traverser->traverse([$function]);
 
-        return $variableVisitor->getFoundNodes();
+        return $variableVisitor->getFoundNodes(); // @phpstan-ignore-line
     }
 
     /**
@@ -67,7 +68,7 @@ final class VariableParser
             $variables = $this->getVariables($foundFunction);
             $func = new Func($foundFunction->name->name);
             foreach ($variables as $variable) {
-                $func->addVariable(new VarReference($variable->name, $variable->getLine()));
+                $func->addVariable(new VarReference($variable->name, $variable->getLine())); // @phpstan-ignore-line
             }
             $functions[] = $func;
         }
@@ -76,7 +77,7 @@ final class VariableParser
 
     /**
      * @param list<Stmt> $stmt
-     * @return List<Class_>
+     * @return list<Class_>
      */
     private function getClasses(array $stmt): array
     {
@@ -87,7 +88,7 @@ final class VariableParser
         $traverser->addVisitor($classVisitor);
         $traverser->traverse($stmt);
 
-        return $classVisitor->getFoundNodes();
+        return $classVisitor->getFoundNodes(); // @phpstan-ignore-line
     }
 
     /**
@@ -104,7 +105,7 @@ final class VariableParser
                 $variables = $this->getVariables($method);
                 $func = new Func(sprintf('%s::%s', $foundClass->name, $method->name->name));
                 foreach ($variables as $variable) {
-                    $func->addVariable(new VarReference($variable->name, $variable->getLine()));
+                    $func->addVariable(new VarReference($variable->name, $variable->getLine())); // @phpstan-ignore-line
                 }
                 $methods[] = $func;
             }

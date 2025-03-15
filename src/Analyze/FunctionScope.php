@@ -6,8 +6,12 @@ namespace Smeghead\PhpVariableHardUsage\Analyze;
 
 final class FunctionScope implements Scope
 {
+    /** @var list<AnalyzedVariable> */
     private array $analyzedVariables;
 
+    /**
+     * @param list<AnalyzedVariable> $analyzedVariables
+     */
     public function __construct(private string $name, array $analyzedVariables)
     {
         $this->analyzedVariables = $analyzedVariables;
@@ -19,7 +23,7 @@ final class FunctionScope implements Scope
     }
 
     /**
-     * @return list<AlalyzedVariable>
+     * @return list<AnalyzedVariable>
      */
     public function getAnalyzedVariables(): array
     {

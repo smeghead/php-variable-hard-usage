@@ -25,4 +25,9 @@ final class FunctionScope implements Scope
     {
         return $this->analyzedVariables;
     }
+
+    public function getVariableHardUsage(): int
+    {
+        return array_sum(array_map(fn(AnalyzedVariable $variable) => $variable->variableHardUsage, $this->analyzedVariables));
+    }
 }

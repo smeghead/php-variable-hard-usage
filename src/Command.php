@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpVariableHardUsage;
 
+use Smeghead\PhpVariableHardUsage\Analyze\VariableAnalyzer;
+use Smeghead\PhpVariableHardUsage\Core\Analyzer;
+use Smeghead\PhpVariableHardUsage\Parse\VariableParser;
+
 final class Command
 {
     public function run(array $argv): void
@@ -19,8 +23,11 @@ final class Command
             return;
         }
 
-        $analyzer = new Analyzer();
-        $analyzer->analyze($filePath);
+        $parser = new VariableParser();
+        $parseResult = $parser->parse(file_get_contents($filePath));
+        $analyzer = new VariableAnalyzer($parseResult->functions);
+        $result = $analyzer->analyze();
+        echo $result->format();
     }
 
     private function printHelp(): void

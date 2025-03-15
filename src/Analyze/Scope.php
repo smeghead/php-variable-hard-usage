@@ -12,4 +12,6 @@ interface Scope
      * @return list<AnalyzedVariable>
      */
     public function getAnalyzedVariables(): array;
+
+    public function getVariableHardUsage(): int;
 }

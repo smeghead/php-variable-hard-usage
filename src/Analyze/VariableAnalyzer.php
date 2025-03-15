@@ -32,14 +32,14 @@ final class VariableAnalyzer
 
         foreach ($variableNames as $variableName) {
             $vars = array_filter($variables, fn($variable) => $variable->name === $variableName);
-            $variableHardUsage = $this->calc($vars);
+            $variableHardUsage = $this->calcVariableHardUsage($vars);
             $analyzedVars[] = new AnalyzedVariable($variableName, $variableHardUsage);
         }
 
         return new FunctionScope($function->name, $analyzedVars);
     }
 
-    private function calc(array $vars): int
+    private function calcVariableHardUsage(array $vars): int
     {
         $lineNumbers = array_map(fn($var) => $var->lineNumber, $vars);
         $avarageLinuNumber = intval(array_sum($lineNumbers) / count($lineNumbers));

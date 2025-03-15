@@ -16,15 +16,21 @@ final class AnalysisResult
         public readonly array $scopes
     )
     {
-        $maxVariableHardUsage = 0;
-        $avarageVariableHardUsage = 0;
-        foreach ($scopes as $scope) {
-            foreach ($scope->getAnalyzedVariables() as $analyzedVariable) {
-                $maxVariableHardUsage = max($maxVariableHardUsage, $analyzedVariable->variableHardUsage);
-                $avarageVariableHardUsage += $analyzedVariable->variableHardUsage;
-            }
+        $this->maxVariableHardUsage = max(array_map(fn(Scope $scope) => $scope->getVariableHardUsage(), $scopes));
+        if (count($scopes) === 0) {
+            $this->avarageVariableHardUsage = 0;
+        } else {
+            $this->avarageVariableHardUsage = array_sum(array_map(fn(Scope $scope) => $scope->getVariableHardUsage(), $scopes)) / count($scopes);
         }
-        $this->maxVariableHardUsage = $maxVariableHardUsage;
-        $this->avarageVariableHardUsage = $avarageVariableHardUsage / count($scopes);
+    }
+
+    public function format(): string
+    {
+        $output = [
+            'maxVariableHardUsage' => $this->maxVariableHardUsage,
+            'avarageVariableHardUsage' => $this->avarageVariableHardUsage,
+        ];
+        $output['scopes'] = array_map(fn(Scope $scope) => ['name' => $scope->getName(), 'variableHardUsage' => $scope->getVariableHardUsage()], $this->scopes);
+        return json_encode($output, JSON_PRETTY_PRINT) . PHP_EOL;
     }
 }

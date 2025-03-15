@@ -17,16 +17,16 @@ class VariableParserTest extends TestCase
         $result = $parser->parse($content);
 
         $this->assertInstanceOf(ParseResult::class, $result);
-        $fuctions = $result->getfunctions();
-        $this->assertCount(1, $fuctions);
-        $this->assertEquals('smallFunction', $fuctions[0]->getName());
-        $this->assertCount(2, $fuctions[0]->getVariables());
+        $functions = $result->functions;
+        $this->assertCount(1, $functions);
+        $this->assertEquals('smallFunction', $functions[0]->name);
+        $this->assertCount(2, $functions[0]->getVariables());
 
-        $vars = $fuctions[0]->getVariables();
-        $this->assertSame('num', $vars[0]->getName());
-        $this->assertSame(5, $vars[0]->getLineNumber(), 'first $num (5)');
-        $this->assertSame('num', $vars[1]->getName());
-        $this->assertSame(10, $vars[1]->getLineNumber(), 'second $num (10)');
+        $vars = $functions[0]->getVariables();
+        $this->assertSame('num', $vars[0]->name);
+        $this->assertSame(5, $vars[0]->lineNumber, 'first $num (5)');
+        $this->assertSame('num', $vars[1]->name);
+        $this->assertSame(10, $vars[1]->lineNumber, 'second $num (10)');
     }
 
     public function testParseClass(): void
@@ -36,19 +36,19 @@ class VariableParserTest extends TestCase
         $result = $parser->parse($content);
 
         $this->assertInstanceOf(ParseResult::class, $result);
-        $fuctions = $result->getfunctions();
-        $this->assertCount(1, $fuctions);
-        $this->assertEquals('Clazz::bigFunction', $fuctions[0]->getName());
-        $this->assertCount(4, $fuctions[0]->getVariables());
+        $functions = $result->functions;
+        $this->assertCount(1, $functions);
+        $this->assertEquals('Clazz::bigFunction', $functions[0]->name);
+        $this->assertCount(4, $functions[0]->getVariables());
 
-        $vars = $fuctions[0]->getVariables();
-        $this->assertSame('num', $vars[0]->getName());
-        $this->assertSame(9, $vars[0]->getLineNumber(), 'first $num (9)');
-        $this->assertSame('num', $vars[1]->getName());
-        $this->assertSame(11, $vars[1]->getLineNumber(), 'second $num (11)');
-        $this->assertSame('num', $vars[2]->getName());
-        $this->assertSame(12, $vars[2]->getLineNumber(), 'second $num (12)');
-        $this->assertSame('num', $vars[3]->getName());
-        $this->assertSame(15, $vars[3]->getLineNumber(), 'second $num (15)');
+        $vars = $functions[0]->getVariables();
+        $this->assertSame('num', $vars[0]->name);
+        $this->assertSame(9, $vars[0]->lineNumber, 'first $num (9)');
+        $this->assertSame('num', $vars[1]->name);
+        $this->assertSame(11, $vars[1]->lineNumber, 'second $num (11)');
+        $this->assertSame('num', $vars[2]->name);
+        $this->assertSame(12, $vars[2]->lineNumber, 'second $num (12)');
+        $this->assertSame('num', $vars[3]->name);
+        $this->assertSame(15, $vars[3]->lineNumber, 'second $num (15)');
     }
 }

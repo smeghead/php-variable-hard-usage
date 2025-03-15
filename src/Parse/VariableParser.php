@@ -23,8 +23,8 @@ final class VariableParser
     }
 
     /**
-     * @param Stmt[] $stmt
-     * @return Function_[]
+     * @param list<Stmt> $stmt
+     * @return List<Function_>
      */
     private function getFunctions(array $stmt): array
     {
@@ -38,6 +38,10 @@ final class VariableParser
         return $functionVisitor->getFoundNodes();
     }
 
+    /**
+     * @param Function_|ClassMethod $function
+     * @return list<Variable>
+     */
     private function getVariables(Function_|ClassMethod $function): array
     {
         $variableVisitor = new FindingVisitor(function ($node) {
@@ -50,6 +54,10 @@ final class VariableParser
         return $variableVisitor->getFoundNodes();
     }
 
+    /**
+     * @param list<Stmt> $stmts
+     * @return list<Func>
+     */
     private function parseFunctions(array $stmts): array
     {
         $foundFunctions = $this->getFunctions($stmts);
@@ -66,6 +74,10 @@ final class VariableParser
         return $functions;
     }
 
+    /**
+     * @param list<Stmt> $stmt
+     * @return List<Class_>
+     */
     private function getClasses(array $stmt): array
     {
         $classVisitor = new FindingVisitor(function ($node) {
@@ -78,6 +90,10 @@ final class VariableParser
         return $classVisitor->getFoundNodes();
     }
 
+    /**
+     * @param list<Stmt> $stmts
+     * @return list<Func>
+     */
     private function parseClasses(array $stmts): array
     {
         $foundClasses = $this->getClasses($stmts);

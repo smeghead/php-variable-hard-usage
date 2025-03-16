@@ -13,9 +13,12 @@ final class VariableParser
 {
     private Parser $parser;
 
+    private NodeFinder $nodeFinder;
+
     public function __construct()
     {
         $this->parser = (new \PhpParser\ParserFactory())->createForNewestSupportedVersion();
+        $this->nodeFinder = new NodeFinder();
     }
 
     public function parse(string $content): ParseResult
@@ -25,9 +28,7 @@ final class VariableParser
             throw new ParseFailedException();
         }
 
-        $nodeFinder = new NodeFinder();
-
-        $functionLikes = $nodeFinder->findInstanceOf($stmts, FunctionLike::class);
+        $functionLikes = $this->nodeFinder->findInstanceOf($stmts, FunctionLike::class);
 
         $functions = $this->collectParseResultPerFunctionLike($functionLikes);
 
@@ -40,14 +41,12 @@ final class VariableParser
      */
     private function collectParseResultPerFunctionLike(array $functionLikes): array
     {
-        $nodeFinder = new NodeFinder();
-
-        return array_map(function (FunctionLike $function) use ($nodeFinder) {
+        return array_map(function (FunctionLike $function) {
             $functionIdentifier = $function->name->name ?? $function->getType() . '@' . $function->getStartLine();
 
             $func = new Func($functionIdentifier);
 
-            $variables = $nodeFinder->findInstanceOf($function, Variable::class);
+            $variables = $this->nodeFinder->findInstanceOf($function, Variable::class);
             foreach ($variables as $variable) {
                 $func->addVariable(new VarReference($variable->name, $variable->getLine())); // @phpstan-ignore-line
             }

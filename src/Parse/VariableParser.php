@@ -30,7 +30,9 @@ final class VariableParser
         $functionLikes = $nodeFinder->findInstanceOf($stmts, FunctionLike::class);
 
         $functions = array_map(function (FunctionLike $function) use ($nodeFinder) {
-            $func = new Func($function->name->name);
+            $functionIdentifier = $function->name->name ?? $function->getType() . '@' . $function->getStartLine();
+
+            $func = new Func($functionIdentifier);
             $variables = $nodeFinder->findInstanceOf($function, Variable::class);
             foreach ($variables as $variable) {
                 $func->addVariable(new VarReference($variable->name, $variable->getLine()));

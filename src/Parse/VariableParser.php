@@ -119,8 +119,6 @@ final class VariableParser
         if ($stmts === null) {
             throw new ParseFailedException();
         }
-        $dumper = new NodeDumper();
-        // echo $dumper->dump($stmts) . PHP_EOL;
 
         $functions = $this->parseFunctions($stmts) + $this->parseClasses($stmts);
 

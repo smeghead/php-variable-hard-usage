@@ -29,17 +29,29 @@ final class VariableParser
 
         $functionLikes = $nodeFinder->findInstanceOf($stmts, FunctionLike::class);
 
-        $functions = array_map(function (FunctionLike $function) use ($nodeFinder) {
+        $functions = $this->collectParseResultPerFunctionLike($functionLikes);
+
+        return new ParseResult($functions);
+    }
+
+    /**
+     * @param list<FunctionLike> $functionLikes
+     * @return list<Func>
+     */
+    private function collectParseResultPerFunctionLike(array $functionLikes): array
+    {
+        $nodeFinder = new NodeFinder();
+
+        return array_map(function (FunctionLike $function) use ($nodeFinder) {
             $functionIdentifier = $function->name->name ?? $function->getType() . '@' . $function->getStartLine();
 
             $func = new Func($functionIdentifier);
+
             $variables = $nodeFinder->findInstanceOf($function, Variable::class);
             foreach ($variables as $variable) {
                 $func->addVariable(new VarReference($variable->name, $variable->getLine()));
             }
             return $func;
         }, $functionLikes);
-
-        return new ParseResult($functions);
     }
 }

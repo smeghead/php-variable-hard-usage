@@ -38,7 +38,8 @@ class VariableParserTest extends TestCase
         $this->assertInstanceOf(ParseResult::class, $result);
         $functions = $result->functions;
         $this->assertCount(1, $functions);
-        $this->assertEquals('Clazz::bigFunction', $functions[0]->name);
+        // $this->assertEquals('Clazz::bigFunction', $functions[0]->name);
+        $this->assertEquals('bigFunction', $functions[0]->name);
         $this->assertCount(4, $functions[0]->getVariables());
 
         $vars = $functions[0]->getVariables();

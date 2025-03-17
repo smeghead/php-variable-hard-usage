@@ -7,8 +7,11 @@ namespace Smeghead\PhpVariableHardUsage\Parse;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\FunctionLike;
 use PhpParser\NodeFinder;
+use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use Smeghead\PhpVariableHardUsage\Parse\Exception\ParseFailedException;
+use Smeghead\PhpVariableHardUsage\Parse\Visitor\FunctionLikeFindingVisitor;
+
 final class VariableParser
 {
     private Parser $parser;
@@ -28,7 +31,11 @@ final class VariableParser
             throw new ParseFailedException();
         }
 
-        $functionLikes = $this->nodeFinder->findInstanceOf($stmts, FunctionLike::class);
+        $traverser = new NodeTraverser();
+        $visitor = new FunctionLikeFindingVisitor(fn($node) => $node instanceof FunctionLike);
+        $traverser->addVisitor($visitor);
+        $traverser->traverse($stmts);
+        $functionLikes = $visitor->getFoundNodes();
 
         $functions = $this->collectParseResultPerFunctionLike($functionLikes);
 
@@ -42,7 +49,13 @@ final class VariableParser
     private function collectParseResultPerFunctionLike(array $functionLikes): array
     {
         return array_map(function (FunctionLike $function) {
-            $functionIdentifier = $function->name->name ?? $function->getType() . '@' . $function->getStartLine();
+            $className = $function->getAttribute('className'); // Get the class name set in FunctionLikeFindingVisitor
+            $functionName = $function->name->name ?? $function->getType() . '@' . $function->getStartLine();
+            $functionIdentifier = sprintf(
+                '%s%s',
+                isset($className) ? $className . '::' : '',
+                $functionName
+            );
 
             $func = new Func($functionIdentifier);
 

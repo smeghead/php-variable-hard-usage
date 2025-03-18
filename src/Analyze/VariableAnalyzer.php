@@ -40,7 +40,7 @@ final class VariableAnalyzer
             $analyzedVars[] = new AnalyzedVariable($variableName, $variableHardUsage);
         }
 
-        return new FunctionScope($function->namespace, $function->name, $analyzedVars);
+        return new Scope($function->namespace, $function->name, $analyzedVars);
     }
 
     /**

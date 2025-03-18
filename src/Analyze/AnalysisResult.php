@@ -31,8 +31,8 @@ final class AnalysisResult
             'avarageVariableHardUsage' => $this->avarageVariableHardUsage,
         ];
         $output['scopes'] = array_map(fn(Scope $scope) => [
-            'namespace' => $scope->getNamespace(),
-            'name' => $scope->getName(),
+            'namespace' => $scope->namespace,
+            'name' => $scope->name,
             'variableHardUsage' => $scope->getVariableHardUsage()
         ], $this->scopes);
         return json_encode($output, JSON_PRETTY_PRINT) . PHP_EOL;

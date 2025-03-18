@@ -3,6 +3,8 @@
 ## Overview
 This PHP CLI tool analyzes the usage of local variables in PHP source code, focusing on their scope and update frequency. It helps developers identify potential issues in handling local variables, improving code quality and maintainability.
 
+![Testing](https://github.com/smeghead/php-variable-hard-usage/actions/workflows/php.yml/badge.svg?event=push) [![Latest Stable Version](https://poser.pugx.org/smeghead/php-variable-hard-usage/v)](https://packagist.org/packages/smeghead/php-variable-hard-usage) [![Total Downloads](https://poser.pugx.org/smeghead/php-variable-hard-usage/downloads)](https://packagist.org/packages/smeghead/php-variable-hard-usage) [![Latest Unstable Version](https://poser.pugx.org/smeghead/php-variable-hard-usage/v/unstable)](https://packagist.org/packages/smeghead/php-variable-hard-usage) [![License](https://poser.pugx.org/smeghead/php-variable-hard-usage/license)](https://packagist.org/packages/smeghead/php-variable-hard-usage) [![PHP Version Require](https://poser.pugx.org/smeghead/php-variable-hard-usage/require/php)](https://packagist.org/packages/smeghead/php-variable-hard-usage)
+
 ## What is "Local Variable Hard Usage"?
 "Local Variable Hard Usage" is a concept that evaluates how intensely local variables are used in a function or method. This metric helps identify variables that might negatively impact code readability and maintainability due to excessive scope width and frequent updates.
 

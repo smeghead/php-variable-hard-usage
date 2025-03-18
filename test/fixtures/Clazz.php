@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Smeghead\PhpVariableHardUsage\Fixtures;
+
 class Clazz
 {
     public function bigFunction(): void

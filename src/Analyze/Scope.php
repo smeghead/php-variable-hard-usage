@@ -6,6 +6,7 @@ namespace Smeghead\PhpVariableHardUsage\Analyze;
 
 interface Scope
 {
+    public function getNamespace(): ?string;
     public function getName(): string;
 
     /**

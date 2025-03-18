@@ -12,11 +12,16 @@ final class FunctionScope implements Scope
     /**
      * @param list<AnalyzedVariable> $analyzedVariables
      */
-    public function __construct(private string $name, array $analyzedVariables)
+    public function __construct(private ?string $namespace, private string $name, array $analyzedVariables)
     {
         $this->analyzedVariables = $analyzedVariables;
     }
 
+    public function getNamespace(): ?string
+    {
+        return $this->namespace;
+    }
+    
     public function getName(): string
     {
         return $this->name;

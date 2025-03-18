@@ -30,7 +30,11 @@ final class AnalysisResult
             'maxVariableHardUsage' => $this->maxVariableHardUsage,
             'avarageVariableHardUsage' => $this->avarageVariableHardUsage,
         ];
-        $output['scopes'] = array_map(fn(Scope $scope) => ['name' => $scope->getName(), 'variableHardUsage' => $scope->getVariableHardUsage()], $this->scopes);
+        $output['scopes'] = array_map(fn(Scope $scope) => [
+            'namespace' => $scope->getNamespace(),
+            'name' => $scope->getName(),
+            'variableHardUsage' => $scope->getVariableHardUsage()
+        ], $this->scopes);
         return json_encode($output, JSON_PRETTY_PRINT) . PHP_EOL;
     }
 }

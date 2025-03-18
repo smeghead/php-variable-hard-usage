@@ -19,7 +19,8 @@ class VariableParserTest extends TestCase
         $this->assertInstanceOf(ParseResult::class, $result);
         $functions = $result->functions;
         $this->assertCount(1, $functions);
-        $this->assertEquals('smallFunction', $functions[0]->name);
+        $this->assertSame('smallFunction', $functions[0]->name);
+        $this->assertSame(null, $functions[0]->namespace);
         $this->assertCount(2, $functions[0]->getVariables());
 
         $vars = $functions[0]->getVariables();
@@ -38,18 +39,19 @@ class VariableParserTest extends TestCase
         $this->assertInstanceOf(ParseResult::class, $result);
         $functions = $result->functions;
         $this->assertCount(1, $functions);
-        $this->assertEquals('Clazz::bigFunction', $functions[0]->name);
+        $this->assertSame('Smeghead\PhpVariableHardUsage\Fixtures', $functions[0]->namespace);
+        $this->assertSame('Clazz::bigFunction', $functions[0]->name);
         $this->assertCount(4, $functions[0]->getVariables());
 
         $vars = $functions[0]->getVariables();
         $this->assertSame('num', $vars[0]->name);
-        $this->assertSame(9, $vars[0]->lineNumber, 'first $num (9)');
+        $this->assertSame(11, $vars[0]->lineNumber, 'first $num (11)');
         $this->assertSame('num', $vars[1]->name);
-        $this->assertSame(11, $vars[1]->lineNumber, 'second $num (11)');
+        $this->assertSame(13, $vars[1]->lineNumber, 'second $num (13)');
         $this->assertSame('num', $vars[2]->name);
-        $this->assertSame(12, $vars[2]->lineNumber, 'second $num (12)');
+        $this->assertSame(14, $vars[2]->lineNumber, 'second $num (14)');
         $this->assertSame('num', $vars[3]->name);
-        $this->assertSame(15, $vars[3]->lineNumber, 'second $num (15)');
+        $this->assertSame(17, $vars[3]->lineNumber, 'second $num (17)');
     }
 
     public function testParseAnonymousFunction(): void
@@ -61,7 +63,7 @@ class VariableParserTest extends TestCase
         $this->assertInstanceOf(ParseResult::class, $result);
         $functions = $result->functions;
         $this->assertCount(1, $functions);
-        $this->assertEquals('Expr_Closure@4', $functions[0]->name);
+        $this->assertSame('Expr_Closure@4', $functions[0]->name);
         $this->assertCount(4, $functions[0]->getVariables());
 
         $vars = $functions[0]->getVariables();
@@ -74,4 +76,23 @@ class VariableParserTest extends TestCase
         $this->assertSame('b', $vars[3]->name);
         $this->assertSame(5, $vars[3]->lineNumber, 'second $b (5)');
     }
+
+    public function testParseNamespace(): void
+    {
+        $parser = new VariableParser();
+        $content = file_get_contents($this->fixtureDir . '/namespace.php');
+        $result = $parser->parse($content);
+
+        $this->assertInstanceOf(ParseResult::class, $result);
+        $functions = $result->functions;
+        $this->assertCount(2, $functions);
+        $this->assertSame('SomeNamespace', $functions[0]->namespace);
+        $this->assertSame('someFunction', $functions[0]->name);
+        $this->assertCount(0, $functions[0]->getVariables());
+
+        $this->assertSame('OtherNamespace', $functions[1]->namespace);
+        $this->assertSame('otherFunction', $functions[1]->name);
+        $this->assertCount(0, $functions[1]->getVariables());
+    }
+
 }

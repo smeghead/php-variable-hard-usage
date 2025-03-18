@@ -9,7 +9,10 @@ final class Func
     /** @var list<VarReference> */
     private array $variables;
 
-    public function __construct(public readonly string $name)
+    public function __construct(
+        public readonly ?string $namespace,
+        public readonly string $name
+    )
     {
         $this->variables = [];
     }

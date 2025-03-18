@@ -11,7 +11,7 @@ class VariableAnalizerTest extends TestCase
 {
     public function testAnalyzeFunctionSimple(): void
     {
-        $func = new Func('testFunction');
+        $func = new Func(null, 'testFunction');
         $func->addVariable(new VarReference('a', 1));
         $func->addVariable(new VarReference('a', 2));
         $func->addVariable(new VarReference('a', 3));
@@ -27,7 +27,7 @@ class VariableAnalizerTest extends TestCase
 
     public function testAnalyzeFunctionLong(): void
     {
-        $func = new Func('testFunction');
+        $func = new Func(null, 'testFunction');
         $func->addVariable(new VarReference('a', 1));
         $func->addVariable(new VarReference('a', 2));
         $func->addVariable(new VarReference('a', 100));

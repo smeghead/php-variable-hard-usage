@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Smeghead\PhpVariableHardUsage\Parse\Visitor;
 
 use PhpParser\Node;
+use PhpParser\Node\FunctionLike;
 use PhpParser\NodeVisitor\FindingVisitor;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Namespace_;
 
 /**
  * FindingVisitor that searches for elements of FunctionLike
@@ -15,15 +17,22 @@ use PhpParser\Node\Stmt\ClassMethod;
  * For ClassMethod, set the class name to ClassName as Attribute.
  */
 class FunctionLikeFindingVisitor extends FindingVisitor {
-    protected array $foundNodes = [];
     private ?string $currentClass = null;
+    private ?string $currentNamespace = null;
 
     public function enterNode(Node $node) {
         if ($node instanceof Class_) {
             // Record class name
             $this->currentClass = $node->name ? $node->name->name : null;
         }
+        if ($node instanceof Namespace_) {
+            // Record class name
+            $this->currentNamespace = $node->name ? $node->name->name : null;
+        }
 
+        if ($node instanceof FunctionLike) {
+            $node->setAttribute('namespace', $this->currentNamespace);
+        }
         if ($node instanceof ClassMethod) {
             $node->setAttribute('className', $this->currentClass);
         }

@@ -41,7 +41,7 @@ composer require --dev smeghead/php-variable-hard-usage
 ```
 
 ## Usage
-66 + 32 + 66
+
 If you specify the path of the file for which you want to measure the local variable abuse and run the program, a report will be displayed in JSON format.
 
 ```bash

@@ -26,8 +26,10 @@ class VariableParserTest extends TestCase
         $vars = $functions[0]->getVariables();
         $this->assertSame('num', $vars[0]->name);
         $this->assertSame(5, $vars[0]->lineNumber, 'first $num (5)');
+        $this->assertSame(true, $vars[0]->assigned, 'first $num (5) asign');
         $this->assertSame('num', $vars[1]->name);
         $this->assertSame(10, $vars[1]->lineNumber, 'second $num (10)');
+        $this->assertSame(false, $vars[1]->assigned, 'second $num (10) not reference');
     }
 
     public function testParseClass(): void

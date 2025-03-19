@@ -9,7 +9,7 @@ final class VarReference
     public function __construct(
         public readonly string $name,
         public readonly int $lineNumber,
-        public readonly bool $updated = false
+        public readonly bool $assigned = false
     )
     {
     }

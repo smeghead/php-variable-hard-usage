@@ -42,4 +42,22 @@ class VariableAnalizerTest extends TestCase
         // abs(34 - 1) + abs(34 - 2) + abs(34 - 100) = 33 + 32 + 66 = 131
         $this->assertSame(131, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage);
     }
+
+    public function testAnalyzeFunctionLongAssignedVariable(): void
+    {
+        $func = new Func(null, 'testFunction');
+        $func->addVariable(new VarReference('a', 1, true));
+        $func->addVariable(new VarReference('a', 2));
+        $func->addVariable(new VarReference('a', 100));
+
+        $sut = new VariableAnalyzer([$func]);
+        $result = $sut->analyze();
+        $scopes = $result->scopes;
+
+        $this->assertCount(1, $scopes);
+        $this->assertSame('testFunction', $scopes[0]->name);
+        // (1 + 2 + 100) / 3 = 34
+        // abs(34 - 1) * 2 + abs(34 - 2) + abs(34 - 100) = 66 + 32 + 66 = 164
+        $this->assertSame(164, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage);
+    }
 }

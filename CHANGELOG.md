@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.0.2 (2025-03-19)
+
 ### Features
 
  * When determining the local variable severity, the coefficients are now taken into account when the variable is an assignment.

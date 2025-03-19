@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * When determining the local variable severity, the coefficients are now taken into account when the variable is an assignment.
+
 ### Bug fix
 
  * Refactor remove interface Scope

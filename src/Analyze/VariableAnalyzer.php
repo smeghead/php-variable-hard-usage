@@ -9,6 +9,8 @@ use Smeghead\PhpVariableHardUsage\Parse\VarReference;
 
 final class VariableAnalyzer
 {
+    private const ASSIGNED_VARIABLE_COEFFICIENT = 2;
+
     /**
      * @var list<Func>
      */
@@ -50,7 +52,7 @@ final class VariableAnalyzer
     {
         $lineNumbers = array_map(fn($var) => $var->lineNumber, $vars);
         $avarageLinuNumber = intval(array_sum($lineNumbers) / count($lineNumbers));
-        $variableHardUsage = array_sum(array_map(fn($lineNumber) => abs($lineNumber - $avarageLinuNumber), $lineNumbers));
+        $variableHardUsage = array_sum(array_map(fn(VarReference $var) => abs($var->lineNumber - $avarageLinuNumber) * ($var->assigned ? self::ASSIGNED_VARIABLE_COEFFICIENT : 1), $vars));
         return $variableHardUsage;
     }
 }

@@ -75,7 +75,8 @@ final class VariableParser
 
             $variables = $this->nodeFinder->findInstanceOf($function, Variable::class);
             foreach ($variables as $variable) {
-                $func->addVariable(new VarReference($variable->name, $variable->getLine())); // @phpstan-ignore-line
+                $assigned = $variable->getAttribute('assigned');
+                $func->addVariable(new VarReference($variable->name, $variable->getLine(), $assigned === true)); // @phpstan-ignore-line
             }
             return $func;
         }, $functionLikes);

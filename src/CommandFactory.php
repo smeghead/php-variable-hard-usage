@@ -41,10 +41,11 @@ final class CommandFactory
 
         if ($arg === 'scopes') {
             if (count($argv) < 3) {
-                fwrite(STDERR, "Usage: php bin/php-variable-hard-usage scopes <directory>\n");
+                fwrite(STDERR, "Usage: php bin/php-variable-hard-usage scopes <path1> [<path2> ...]\n");
                 return new HelpCommand();
             }
-            return new ScopesCommand($argv[2]);
+            // 複数のパスを渡す
+            return new ScopesCommand(array_slice($argv, 2));
         }
 
         // 後方互換性のため、コマンドが指定されていない場合は単一ファイルモードとして扱う

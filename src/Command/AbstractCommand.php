@@ -17,10 +17,10 @@ abstract class AbstractCommand implements CommandInterface
     {
         echo "Usage: php bin/php-variable-hard-usage [command] [options]\n";
         echo "Commands:\n";
-        echo "  single <file>           Analyze a single file\n";
-        echo "  scopes <directory>      Analyze PHP files in a directory\n";
+        echo "  single <file>                  Analyze a single file\n";
+        echo "  scopes <path1> [<path2> ...]  Analyze PHP files in directories or specific files\n";
         echo "Options:\n";
-        echo "  --help                  Display help information\n";
-        echo "  --version               Show the version of the tool\n";
+        echo "  --help                         Display help information\n";
+        echo "  --version                      Show the version of the tool\n";
     }
 }

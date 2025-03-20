@@ -9,26 +9,43 @@ use Smeghead\PhpVariableHardUsage\Parse\VariableParser;
 
 final class ScopesCommand extends AbstractCommand
 {
-    private string $directory;
+    /** @var list<string> */
+    private array $paths;
 
-    public function __construct(string $directory)
+    /**
+     * @param list<string> $paths ディレクトリまたはファイルのパスリスト
+     */
+    public function __construct(array $paths)
     {
-        $this->directory = $directory;
+        $this->paths = $paths;
     }
 
     public function execute(): void
     {
-        if (!is_dir($this->directory)) {
-            fwrite(STDERR, "Directory not found: {$this->directory}\n");
-            return;
+        $phpFiles = [];
+
+        // 各パスを処理
+        foreach ($this->paths as $path) {
+            if (is_dir($path)) {
+                // ディレクトリの場合は再帰的にPHPファイルを収集
+                $dirFiles = $this->findPhpFiles($path);
+                $phpFiles = array_merge($phpFiles, $dirFiles);
+            } elseif (is_file($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
+                // 単一のPHPファイルの場合
+                $phpFiles[] = $path;
+            } else {
+                fwrite(STDERR, "Invalid path: {$path}\n");
+            }
         }
 
-        $phpFiles = $this->findPhpFiles($this->directory);
         if (empty($phpFiles)) {
-            fwrite(STDERR, "No PHP files found in: {$this->directory}\n");
+            fwrite(STDERR, "No PHP files found in specified paths\n");
             return;
         }
 
+        // 重複を削除
+        $phpFiles = array_unique($phpFiles);
+        
         $results = [];
         foreach ($phpFiles as $file) {
             try {

@@ -8,11 +8,12 @@ final class Command
 {
     /**
      * @param list<string> $argv
+     * @return int 終了コード
      */
-    public function run(array $argv): void
+    public function run(array $argv): int
     {
         $factory = new CommandFactory();
         $command = $factory->createCommand($argv);
-        $command->execute();
+        return $command->execute();
     }
 }

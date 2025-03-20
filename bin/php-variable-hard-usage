@@ -13,4 +13,5 @@ foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php
 use Smeghead\PhpVariableHardUsage\Command;
 
 $command = new Command();
-$command->run($argv);
+$exitCode = $command->run($argv);
+exit($exitCode);

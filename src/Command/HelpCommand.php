@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpVariableHardUsage\Command;
 
-final class HelpCommand extends AbstractCommand
+class HelpCommand extends AbstractCommand
 {
-    public function execute(): void
+    public function execute(): int
     {
         $this->printHelp();
+        return 0;
     }
 }

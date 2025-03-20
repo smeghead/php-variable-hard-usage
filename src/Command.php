@@ -9,6 +9,8 @@ use Smeghead\PhpVariableHardUsage\Parse\VariableParser;
 
 final class Command
 {
+    private const VERSION = '0.0.3';
+
     /**
      * @param list<string> $argv
      */
@@ -19,6 +21,18 @@ final class Command
             return;
         }
 
+        $option = $argv[1];
+
+        if ($option === '--help') {
+            $this->printHelp();
+            return;
+        }
+
+        if ($option === '--version') {
+            $this->printVersion();
+            return;
+        }
+
         $filePath = $argv[1];
         if (!file_exists($filePath)) {
             echo "File not found: $filePath\n";
@@ -26,7 +40,7 @@ final class Command
         }
 
         $parser = new VariableParser();
-        $content =file_get_contents($filePath);
+        $content = file_get_contents($filePath);
         if ($content === false) {
             echo "Failed to read file: $filePath\n";
             return;
@@ -43,5 +57,10 @@ final class Command
         echo "Options:\n";
         echo "  --help    Display help information\n";
         echo "  --version Show the version of the tool\n";
+    }
+
+    private function printVersion(): void
+    {
+        echo "PHP Variable Hard Usage Analyzer, version " . self::VERSION . "\n";
     }
 }

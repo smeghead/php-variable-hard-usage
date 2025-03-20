@@ -25,30 +25,18 @@ final class VariableParser
         $this->nodeFinder = new NodeFinder();
     }
 
-    /**
-     * @param array<\PhpParser\Node\Stmt> $stmts
-     * @return array<\PhpParser\Node\Stmt>
-     */
-    private function resolveNames(array $stmts): array
-    {
-        $nameResolver = new NameResolver();
-        $nodeTraverser = new NodeTraverser();
-        $nodeTraverser->addVisitor($nameResolver);
-        return $nodeTraverser->traverse($stmts);
-    }
-
     public function parse(string $content): ParseResult
     {
         $stmts = $this->parser->parse($content);
         if ($stmts === null) {
             throw new ParseFailedException();
         }
-        $stmts = $this->resolveNames($stmts);
 
         $traverser = new NodeTraverser();
         $visitor = new FunctionLikeFindingVisitor(fn($node) => $node instanceof FunctionLike);
         $traverser->addVisitor($visitor);
         $traverser->traverse($stmts);
+        /** @var list<FunctionLike> */
         $functionLikes = $visitor->getFoundNodes();
 
         $functions = $this->collectParseResultPerFunctionLike($functionLikes);
@@ -63,6 +51,7 @@ final class VariableParser
     private function collectParseResultPerFunctionLike(array $functionLikes): array
     {
         return array_map(function (FunctionLike $function) {
+            /** @var string|null */
             $namespace = $function->getAttribute('namespace'); // Get the namespace name set in FunctionLikeFindingVisitor
             $className = $function->getAttribute('className'); // Get the class name set in FunctionLikeFindingVisitor
             $functionName = $function->name->name ?? $function->getType() . '@' . $function->getStartLine();

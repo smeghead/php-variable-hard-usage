@@ -49,5 +49,6 @@ class FunctionLikeFindingVisitor extends FindingVisitor {
             // Reset because it leaves the class scope
             $this->currentClass = null;
         }
+        return parent::leaveNode($node);
     }
 }

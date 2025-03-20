@@ -22,7 +22,7 @@ class VariableAnalizerTest extends TestCase
 
         $this->assertCount(1, $scopes);
         $this->assertSame('testFunction', $scopes[0]->name);
-        $this->assertSame(2, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage);
+        $this->assertSame(3, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage, '0 + 1 + 2');
     }
 
     public function testAnalyzeFunctionLong(): void
@@ -38,9 +38,7 @@ class VariableAnalizerTest extends TestCase
 
         $this->assertCount(1, $scopes);
         $this->assertSame('testFunction', $scopes[0]->name);
-        // (1 + 2 + 100) / 3 = 34
-        // abs(34 - 1) + abs(34 - 2) + abs(34 - 100) = 33 + 32 + 66 = 131
-        $this->assertSame(131, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage);
+        $this->assertSame(100, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage, '(1 - 1) + (2 - 1) + (100 - 1)');
     }
 
     public function testAnalyzeFunctionLongAssignedVariable(): void
@@ -56,8 +54,22 @@ class VariableAnalizerTest extends TestCase
 
         $this->assertCount(1, $scopes);
         $this->assertSame('testFunction', $scopes[0]->name);
-        // (1 + 2 + 100) / 3 = 34
-        // abs(34 - 1) * 2 + abs(34 - 2) + abs(34 - 100) = 66 + 32 + 66 = 164
-        $this->assertSame(164, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage);
+        $this->assertSame(100, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage, '(1 - 1) * 2 + (2 - 1) + (100 - 1)');
+    }
+
+    public function testAnalyzeFunctionLongMultipleAssignedVariable(): void
+    {
+        $func = new Func(null, 'testFunction');
+        $func->addVariable(new VarReference('a', 1, true));
+        $func->addVariable(new VarReference('a', 2));
+        $func->addVariable(new VarReference('a', 100, true));
+
+        $sut = new VariableAnalyzer([$func]);
+        $result = $sut->analyze();
+        $scopes = $result->scopes;
+
+        $this->assertCount(1, $scopes);
+        $this->assertSame('testFunction', $scopes[0]->name);
+        $this->assertSame(199, $scopes[0]->getAnalyzedVariables()[0]->variableHardUsage, '(1 - 1) * 2 + (2 - 1) + (100 - 1) * 2');
     }
 }

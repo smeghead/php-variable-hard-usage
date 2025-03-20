@@ -50,9 +50,7 @@ final class VariableAnalyzer
      */
     private function calcVariableHardUsage(array $vars): int
     {
-        $lineNumbers = array_map(fn($var) => $var->lineNumber, $vars);
-        $avarageLinuNumber = intval(array_sum($lineNumbers) / count($lineNumbers));
-        $variableHardUsage = array_sum(array_map(fn(VarReference $var) => abs($var->lineNumber - $avarageLinuNumber) * ($var->assigned ? self::ASSIGNED_VARIABLE_COEFFICIENT : 1), $vars));
-        return $variableHardUsage;
+        $firstLineNumber = $vars[0]->lineNumber;
+        return array_sum(array_map(fn(VarReference $var) => ($var->lineNumber - $firstLineNumber) * ($var->assigned ? self::ASSIGNED_VARIABLE_COEFFICIENT : 1), $vars));
     }
 }

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### Features
+
+ * Added subcommand support with `single` and `scopes` modes
+ * The `single` mode analyzes a single PHP file
+ * The `scopes` mode supports analyzing multiple files and directories
+ * Enhanced command line interface with help and version options
+
 ## v0.0.3 (2025-03-20)
 
 ### Features

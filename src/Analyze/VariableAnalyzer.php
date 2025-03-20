@@ -34,7 +34,8 @@ final class VariableAnalyzer
         $analyzedVars = [];
 
         foreach ($variableNames as $variableName) {
-            $vars = array_filter($variables, fn($variable) => $variable->name === $variableName);
+            // array_values でインデックスを振り直す
+            $vars = array_values(array_filter($variables, fn($variable) => $variable->name === $variableName));
             $variableHardUsage = $this->calcVariableHardUsage($vars);
             $analyzedVars[] = new AnalyzedVariable($variableName, $variableHardUsage);
         }

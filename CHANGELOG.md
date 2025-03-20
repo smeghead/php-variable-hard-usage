@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.0.3 (2025-03-20)
+
 ### Features
 
  * The base of deviation of local variable abuse has been changed from the average number of rows to the first number of rows.

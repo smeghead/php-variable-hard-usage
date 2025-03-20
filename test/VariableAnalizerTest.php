@@ -16,8 +16,9 @@ class VariableAnalizerTest extends TestCase
         $func->addVariable(new VarReference('a', 2));
         $func->addVariable(new VarReference('a', 3));
 
-        $sut = new VariableAnalyzer([$func]);
+        $sut = new VariableAnalyzer('target.php', [$func]);
         $result = $sut->analyze();
+        $this->assertSame('target.php', $result->filename);
         $scopes = $result->scopes;
 
         $this->assertCount(1, $scopes);
@@ -32,8 +33,9 @@ class VariableAnalizerTest extends TestCase
         $func->addVariable(new VarReference('a', 2));
         $func->addVariable(new VarReference('a', 100));
 
-        $sut = new VariableAnalyzer([$func]);
+        $sut = new VariableAnalyzer('target.php', [$func]);
         $result = $sut->analyze();
+        $this->assertSame('target.php', $result->filename);
         $scopes = $result->scopes;
 
         $this->assertCount(1, $scopes);
@@ -48,8 +50,9 @@ class VariableAnalizerTest extends TestCase
         $func->addVariable(new VarReference('a', 2));
         $func->addVariable(new VarReference('a', 100));
 
-        $sut = new VariableAnalyzer([$func]);
+        $sut = new VariableAnalyzer('target.php', [$func]);
         $result = $sut->analyze();
+        $this->assertSame('target.php', $result->filename);
         $scopes = $result->scopes;
 
         $this->assertCount(1, $scopes);
@@ -64,8 +67,9 @@ class VariableAnalizerTest extends TestCase
         $func->addVariable(new VarReference('a', 2));
         $func->addVariable(new VarReference('a', 100, true));
 
-        $sut = new VariableAnalyzer([$func]);
+        $sut = new VariableAnalyzer('target.php', [$func]);
         $result = $sut->analyze();
+        $this->assertSame('target.php', $result->filename);
         $scopes = $result->scopes;
 
         $this->assertCount(1, $scopes);

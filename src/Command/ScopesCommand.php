@@ -20,7 +20,7 @@ final class ScopesCommand extends AbstractCommand
         $this->paths = $paths;
     }
 
-    public function execute(): void
+    public function execute(): int
     {
         $phpFiles = [];
 
@@ -40,18 +40,21 @@ final class ScopesCommand extends AbstractCommand
 
         if (empty($phpFiles)) {
             fwrite(STDERR, "No PHP files found in specified paths\n");
-            return;
+            return 1;
         }
 
         // 重複を削除
         $phpFiles = array_unique($phpFiles);
         
         $results = [];
+        $hasErrors = false;
+        
         foreach ($phpFiles as $file) {
             try {
                 $content = file_get_contents($file);
                 if ($content === false) {
                     fwrite(STDERR, "Failed to read file: {$file}\n");
+                    $hasErrors = true;
                     continue;
                 }
 
@@ -61,11 +64,19 @@ final class ScopesCommand extends AbstractCommand
                 $results[] = $analyzer->analyze();
             } catch (\Exception $e) {
                 fwrite(STDERR, "Error analyzing {$file}: {$e->getMessage()}\n");
+                $hasErrors = true;
             }
+        }
+        
+        if (empty($results)) {
+            return 1;
         }
 
         // 複数ファイルの結果をまとめて表示
         $this->printResults($results);
+        
+        // エラーが一つでもあった場合は終了コードを1にする
+        return $hasErrors ? 1 : 0;
     }
 
     /**

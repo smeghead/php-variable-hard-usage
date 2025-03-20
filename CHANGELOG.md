@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Fixed command execution to properly return error codes when failures occur
+ * Improved error handling in all command implementations
+
 ## v0.0.4 (2025-03-20)
 
 ### Features

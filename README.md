@@ -84,40 +84,42 @@ $ vendor/bin/php-variable-hard-usage somewhere/your-php-file.php
 }
 ```
 
+
 ## How to calculate VariableHardUsage
 
-VariableHardUsage is an index used to evaluate the frequency of use and scope of a local variable within a function. This indicator is calculated based on the variance of the line number at which the variable is used and the frequency with which the variable is assigned.
+VariableHardUsage is an index used to evaluate the frequency of use and scope of local variables within a function. This measure is calculated based on the variance of the line number of references to the same variable and the frequency with which the variable is assigned.
 
 ### Calculation Procedure
 
-1. Obtain the line numbers of the variables:.
+1. Obtain the line numbers of the references to the same variable:.
 
-  * Obtains the line numbers of all variables used in the function.
+  * For each variable used in the function, retrieve all line numbers where the variable is referenced.
 
 2. Calculate the average of the line numbers.
 
-  * Calculates the average of the retrieved line numbers. This is obtained by dividing the sum of the line numbers by the number of variables.
+  * Calculates the average of the line numbers obtained. This is obtained by dividing the sum of the line numbers by the number of references.
 
 3. Calculate VariableHardUsage.
 
-  * For each variable, the absolute difference between the line number and the average line number is calculated.
+  * Calculates the absolute difference between the line number and the average line number for each reference.
   * If a variable is assigned, the difference is multiplied by a factor (2 by default).
   * Sum all these values to obtain VariableHardUsage.
 
-### EXAMPLE.
+### Example
 
-For example, suppose there are three variables in a function, each with row numbers 10, 20, and 30, and that some assignments are made and some are not made. In this case, the average row number is 20.
+For example, suppose there are three reference points in a function, each with line numbers 10, 20, and 30, where some assignments are made and some are not made. In this case, the average row number is 20.
 
-* Variable A: Row 10, with assignment
-* Variable B: Row 20, no assignment
-* Variable C: Row 30, with assignment
+* Reference A: Row 10, with assignment
+* Reference B: Row 20, no assignment
+* Reference C: Row 30, with assignment
 
 In this case, VariableHardUsage is calculated as follows
 
-* Variable A: |10 - 20| * 2 = 20
-* Variable B: |20 - 20| * 1 = 0
-* Variable C: |30 - 20| * 2 = 20
+* Reference A: |10 - 20| * 2 = 20
+* Reference B: |20 - 20| * 1 = 0
+* Reference C: |30 - 20| * 2 = 20
 
 Summing these, VariableHardUsage is 20 + 0 + 20 = 40.
 
 VariableHardUsage is thus calculated as a measure of the frequency of use and scope of a variable. This metric can be used to quantitatively evaluate the usage of local variables within a function and help improve code readability and maintainability.
+

@@ -13,6 +13,7 @@ final class AnalysisResult
      * @param list<Scope> $scopes
      */
     public function __construct(
+        public readonly string $filename,
         public readonly array $scopes
     )
     {
@@ -27,6 +28,7 @@ final class AnalysisResult
     public function format(): string
     {
         $output = [
+            'filename' => $this->filename,
             'maxVariableHardUsage' => $this->maxVariableHardUsage,
             'avarageVariableHardUsage' => $this->avarageVariableHardUsage,
         ];

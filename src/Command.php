@@ -32,7 +32,7 @@ final class Command
             return;
         }
         $parseResult = $parser->parse($content);
-        $analyzer = new VariableAnalyzer($parseResult->functions);
+        $analyzer = new VariableAnalyzer($filePath, $parseResult->functions);
         $result = $analyzer->analyze();
         echo $result->format();
     }

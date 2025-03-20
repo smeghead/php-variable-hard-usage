@@ -12,21 +12,18 @@ final class VariableAnalyzer
     private const ASSIGNED_VARIABLE_COEFFICIENT = 2;
 
     /**
-     * @var list<Func>
-     */
-    private array $functions;
-
-    /**
      * @param list<Func> $functions
      */
-    public function __construct(array $functions)
+    public function __construct(
+        public readonly string $filename,
+        public readonly array $functions
+    )
     {
-        $this->functions = $functions;
     }
 
     public function analyze(): AnalysisResult
     {
-        return new AnalysisResult(array_map(fn($f) => $this->analyzeFunction($f), $this->functions));
+        return new AnalysisResult($this->filename, array_map(fn($f) => $this->analyzeFunction($f), $this->functions));
     }
 
     private function analyzeFunction(Func $function): Scope

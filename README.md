@@ -42,11 +42,16 @@ composer require --dev smeghead/php-variable-hard-usage
 
 ## Usage
 
-If you specify the path of the file for which you want to measure the local variable abuse and run the program, a report will be displayed in JSON format.
+The tool provides two operation modes: `single` mode for analyzing individual files and `scopes` mode for analyzing multiple files or directories.
+
+### Single File Analysis
+
+Use the `single` command to analyze a single PHP file:
 
 ```bash
-$ vendor/bin/php-variable-hard-usage somewhere/your-php-file.php
+$ vendor/bin/php-variable-hard-usage single path/to/your-file.php
 {
+    "filename": "path/to/your-file.php",
     "maxVariableHardUsage": 65,
     "avarageVariableHardUsage": 26.833333333333332,
     "scopes": [
@@ -64,24 +69,69 @@ $ vendor/bin/php-variable-hard-usage somewhere/your-php-file.php
             "namespace": "Smeghead\\PhpVariableHardUsage\\Parse",
             "name": "VariableParser::parse",
             "variableHardUsage": 39
-        },
+        }
+    ]
+}
+```
+
+For backward compatibility, you can also run without specifying the `single` command:
+
+```bash
+$ vendor/bin/php-variable-hard-usage path/to/your-file.php
+```
+
+### Multiple Files Analysis
+
+Use the scopes command to analyze multiple files or entire directories:
+
+```bash
+# Analyze all PHP files in a directory
+$ vendor/bin/php-variable-hard-usage scopes src/
+
+# Analyze multiple directories
+$ vendor/bin/php-variable-hard-usage scopes src/ tests/
+
+# Analyze specific files and directories
+$ vendor/bin/php-variable-hard-usage scopes src/Command.php config/ tests/
+```
+
+The output for scopes mode is a combined report with results sorted by variable hard usage:
+
+```json
+{
+    "scopes": [
         {
-            "namespace": "Smeghead\\PhpVariableHardUsage\\Parse",
-            "name": "Expr_ArrowFunction@49",
-            "variableHardUsage": 0
-        },
-        {
+            "file": "src/Parse/VariableParser.php",
             "namespace": "Smeghead\\PhpVariableHardUsage\\Parse",
             "name": "VariableParser::collectParseResultPerFunctionLike",
             "variableHardUsage": 65
         },
         {
+            "file": "src/Parse/VariableParser.php",
             "namespace": "Smeghead\\PhpVariableHardUsage\\Parse",
             "name": "Expr_Closure@65",
             "variableHardUsage": 47
+        },
+        {
+            "file": "src/Parse/VariableParser.php",
+            "namespace": "Smeghead\\PhpVariableHardUsage\\Parse",
+            "name": "VariableParser::parse",
+            "variableHardUsage": 39
         }
     ]
 }
+```
+
+### Help and Version Information
+
+To display help information:
+
+```bash
+$ vendor/bin/php-variable-hard-usage --help
+```
+
+```bash
+$ vendor/bin/php-variable-hard-usage --version
 ```
 
 ## How to calculate VariableHardUsage

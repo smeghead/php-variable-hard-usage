@@ -6,7 +6,7 @@ namespace Smeghead\PhpVariableHardUsage\Command;
 
 abstract class AbstractCommand implements CommandInterface
 {
-    private const VERSION = '0.0.3';
+    private const VERSION = '0.0.4';
 
     protected function printVersion(): void
     {

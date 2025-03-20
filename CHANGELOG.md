@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.0.4 (2025-03-20)
+
 ### Features
 
  * Added subcommand support with `single` and `scopes` modes

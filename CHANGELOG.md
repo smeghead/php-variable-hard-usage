@@ -3,6 +3,7 @@
 ### Features
 
  * The base of deviation of local variable abuse has been changed from the average number of rows to the first number of rows.
+ * AssignOp has been added to the assignment decision in addition to Assign.
 
 
 ## v0.0.2 (2025-03-19)

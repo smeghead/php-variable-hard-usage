@@ -6,6 +6,7 @@ namespace Smeghead\PhpVariableHardUsage\Parse\Visitor;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Assign;
+use PhpParser\Node\Expr\AssignOp;
 use PhpParser\Node\FunctionLike;
 use PhpParser\NodeVisitor\FindingVisitor;
 use PhpParser\Node\Stmt\Class_;
@@ -31,7 +32,7 @@ class FunctionLikeFindingVisitor extends FindingVisitor {
             $this->currentNamespace = $node->name ? $node->name->name : null;
         }
 
-        if ($node instanceof Assign) {
+        if ($node instanceof Assign || $node instanceof AssignOp) {
             $node->var->setAttribute('assigned', true); // Mark as assigned
         }
         if ($node instanceof FunctionLike) {

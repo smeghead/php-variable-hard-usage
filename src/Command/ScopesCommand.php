@@ -125,7 +125,8 @@ final class ScopesCommand extends AbstractCommand
         foreach ($results as $result) {
             foreach ($result->scopes as $scope) {
                 $allScopes[] = [
-                    'file' => $result->filename,
+                    'file' => $result->filename,        // 既存の 'file' プロパティを維持
+                    'filename' => $result->filename,    // 新しく 'filename' プロパティを追加
                     'namespace' => $scope->namespace,
                     'name' => $scope->name,
                     'variableHardUsage' => $scope->getVariableHardUsage()

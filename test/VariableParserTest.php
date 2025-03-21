@@ -107,7 +107,7 @@ class VariableParserTest extends TestCase
         $functions = $result->functions;
         $this->assertCount(1, $functions);
         $this->assertSame('assignFunction', $functions[0]->name);
-        $this->assertCount(14, $functions[0]->getVariables());
+        $this->assertCount(15, $functions[0]->getVariables());
 
         $vars = $functions[0]->getVariables();
         $this->assertSame('num', $vars[0]->name);
@@ -152,6 +152,9 @@ class VariableParserTest extends TestCase
         $this->assertSame('num', $vars[13]->name);
         $this->assertSame(18, $vars[13]->lineNumber);
         $this->assertSame(true, $vars[13]->assigned);
+        $this->assertSame('num', $vars[14]->name);
+        $this->assertSame(19, $vars[14]->lineNumber);
+        $this->assertSame(true, $vars[14]->assigned);
     }
 
     public function testInterpolatedStringFunction(): void

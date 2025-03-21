@@ -6,6 +6,7 @@ namespace Smeghead\PhpVariableHardUsage\Parse;
 
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\FunctionLike;
+use PhpParser\Node\InterpolatedStringPart;
 use PhpParser\Node\Scalar\InterpolatedString;
 use PhpParser\NodeFinder;
 use PhpParser\NodeTraverser;
@@ -66,7 +67,7 @@ final class VariableParser
             $variables = $this->nodeFinder->findInstanceOf($function, Variable::class);
             foreach ($variables as $variable) {
                 $assigned = $variable->getAttribute('assigned');
-                $func->addVariable(new VarReference($this->getVariableName($variable), $variable->getLine(), $assigned === true)); // @phpstan-ignore-line
+                $func->addVariable(new VarReference($this->getVariableName($variable), $variable->getLine(), $assigned === true));
             }
             return $func;
         }, $functionLikes);
@@ -78,11 +79,14 @@ final class VariableParser
             $parts = $variable->name->parts;
             return sprintf('${"%s"}', implode('', array_map(function($part){
                 if ($part instanceof Variable) {
-                    return sprintf('{$%s}', $part->name);
+                    return sprintf('{$%s}', $part->name->name ?? $part->name);
+                } else if ($part instanceof InterpolatedStringPart) {
+                    return $part->value;
+                } else {
+                    return '';
                 }
-                return $part->value;
             }, $parts)));
         }
-        return $variable->name;
+        return $variable->name->name ?? $variable->name;
     }
 }

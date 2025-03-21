@@ -9,6 +9,16 @@ use Smeghead\PhpVariableHardUsage\Parse\VarReference;
 
 class VariableAnalizerTest extends TestCase
 {
+    public function testAnalyzeEmpty(): void
+    {
+        $sut = new VariableAnalyzer('target.php', []);
+        $result = $sut->analyze();
+        $this->assertSame('target.php', $result->filename);
+        $scopes = $result->scopes;
+
+        $this->assertCount(0, $scopes);
+    }
+
     public function testAnalyzeFunctionSimple(): void
     {
         $func = new Func(null, 'testFunction');

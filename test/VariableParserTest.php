@@ -153,4 +153,29 @@ class VariableParserTest extends TestCase
         $this->assertSame(18, $vars[13]->lineNumber);
         $this->assertSame(true, $vars[13]->assigned);
     }
+
+    public function testInterpolatedStringFunction(): void
+    {
+        $parser = new VariableParser();
+        $content = file_get_contents($this->fixtureDir . '/interpolated_string.php');
+        $result = $parser->parse($content);
+
+        $this->assertInstanceOf(ParseResult::class, $result);
+        $functions = $result->functions;
+        $this->assertCount(1, $functions);
+        $this->assertSame('test', $functions[0]->name);
+        $this->assertSame(null, $functions[0]->namespace);
+        $this->assertCount(3, $functions[0]->getVariables());
+
+        $vars = $functions[0]->getVariables();
+        $this->assertSame('name', $vars[0]->name);
+        $this->assertSame(3, $vars[0]->lineNumber, 'first $name');
+        $this->assertSame(false, $vars[0]->assigned, 'first $name');
+        $this->assertSame('${"Hello, {$name}!"}', $vars[1]->name, '${"Hello, {$name}!');
+        $this->assertSame(5, $vars[1]->lineNumber, 'interpolated_string');
+        $this->assertSame(false, $vars[1]->assigned, 'interpolated_string not reference');
+        $this->assertSame('name', $vars[2]->name);
+        $this->assertSame(5, $vars[2]->lineNumber, 'second $name (10)');
+        $this->assertSame(false, $vars[2]->assigned, 'second $name (10) not reference');
+    }
 }

@@ -16,4 +16,5 @@ function assignFunction(): void
     $num >>= 1; // 16行目
     $num .= 1; // 17行目
     $num ??= 1; // 18行目
+    $num =& f(); // 19行目
 }

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### Bug fix
+
+ * The name of the file path information item in scopes mode is `file`, but I want to match it with `filename`, which is the name of the file path item in single mode.
+
+
 ## v0.0.6 (2025-03-21)
 
 ### Features

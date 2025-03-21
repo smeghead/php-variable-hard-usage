@@ -4,6 +4,7 @@
 
  * Fixed command execution to properly return error codes when failures occur
  * Improved error handling in all command implementations
+ * fix empty scope error. #11
 
 ## v0.0.4 (2025-03-20)
 

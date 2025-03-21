@@ -17,10 +17,11 @@ final class AnalysisResult
         public readonly array $scopes
     )
     {
-        $this->maxVariableHardUsage = max(array_map(fn(Scope $scope) => $scope->getVariableHardUsage(), $scopes));
         if (count($scopes) === 0) {
+            $this->maxVariableHardUsage = 0;
             $this->avarageVariableHardUsage = 0;
         } else {
+            $this->maxVariableHardUsage = max(array_map(fn(Scope $scope) => $scope->getVariableHardUsage(), $scopes));
             $this->avarageVariableHardUsage = array_sum(array_map(fn(Scope $scope) => $scope->getVariableHardUsage(), $scopes)) / count($scopes);
         }
     }

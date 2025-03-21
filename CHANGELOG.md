@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.0.5 (2025-03-21)
+
 ### Bug fix
 
  * Fixed command execution to properly return error codes when failures occur

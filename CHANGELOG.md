@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.0.6 (2025-03-21)
+
+### Features
+
+ * Revise assignment identification #15 by @hirokinoue
+
 ## v0.0.5 (2025-03-21)
 
 ### Bug fix

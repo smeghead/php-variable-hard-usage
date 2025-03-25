@@ -122,6 +122,52 @@ The output for scopes mode is a combined report with results sorted by variable 
 }
 ```
 
+### CI Integration with Check Mode
+
+Use the check command with an optional threshold to analyze files and enforce variable usage standards in CI/CD pipelines:
+
+```bash
+# Check files with default threshold (200)
+$ vendor/bin/php-variable-hard-usage check src/
+
+# Check with custom threshold
+$ vendor/bin/php-variable-hard-usage check --threshold=500 src/ tests/
+
+# Check specific files and directories
+$ vendor/bin/php-variable-hard-usage check --threshold=300 src/Command.php config/
+```
+
+The check mode returns different exit codes based on the result:
+
+* Exit code 0: Success - No analysis errors and no scopes exceeding the threshold
+* Exit code 1: Analysis failure - Errors occurred during file parsing or analysis
+* Exit code 2: Threshold exceeded - One or more scopes exceeded the specified variable hard usage threshold
+
+The output includes the threshold used, result status, and a list of scopes that exceeded the threshold:
+
+```json
+{
+    "threshold": 500,
+    "result": "failure",
+    "scopes": [
+        {
+            "file": "src/Parse/VariableParser.php",
+            "namespace": "Smeghead\\PhpVariableHardUsage\\Parse",
+            "name": "VariableParser::collectParseResultPerFunctionLike",
+            "variableHardUsage": 655
+        },
+        {
+            "file": "src/Command/SingleCommand.php",
+            "namespace": "Smeghead\\PhpVariableHardUsage\\Command",
+            "name": "SingleCommand::execute",
+            "variableHardUsage": 530
+        }
+    ]
+}
+```
+
+This mode is particularly useful for integrating the tool into your CI/CD pipeline to fail builds when variable usage exceeds acceptable thresholds.
+
 ### Help and Version Information
 
 To display help information:

@@ -9,6 +9,7 @@ use Smeghead\PhpVariableHardUsage\Command\HelpCommand;
 use Smeghead\PhpVariableHardUsage\Command\SingleCommand;
 use Smeghead\PhpVariableHardUsage\Command\ScopesCommand;
 use Smeghead\PhpVariableHardUsage\Command\VersionCommand;
+use Smeghead\PhpVariableHardUsage\Command\CheckCommand;
 
 final class CommandFactory
 {
@@ -46,6 +47,32 @@ final class CommandFactory
             }
             // 複数のパスを渡す
             return new ScopesCommand(array_slice($argv, 2));
+        }
+
+        if ($arg === 'check') {
+            if (count($argv) < 3) {
+                fwrite(STDERR, "Usage: php bin/php-variable-hard-usage check [--threshold=<value>] <path1> [<path2> ...]\n");
+                return new HelpCommand();
+            }
+            
+            // 残りの引数を解析
+            $threshold = null;
+            $paths = [];
+            
+            foreach (array_slice($argv, 2) as $argument) {
+                if (preg_match('/^--threshold=(\d+)$/', $argument, $matches)) {
+                    $threshold = (int)$matches[1];
+                } else {
+                    $paths[] = $argument;
+                }
+            }
+            
+            if (empty($paths)) {
+                fwrite(STDERR, "Usage: php bin/php-variable-hard-usage check [--threshold=<value>] <path1> [<path2> ...]\n");
+                return new HelpCommand();
+            }
+            
+            return new CheckCommand($paths, $threshold);
         }
 
         // 後方互換性のため、コマンドが指定されていない場合は単一ファイルモードとして扱う

@@ -38,7 +38,7 @@ final class CheckCommand extends AbstractCommand
         $exceedingScopes = $this->printResults($results);
         
         // 閾値を超えるスコープがあればエラーコード2を返す
-        if (!empty($exceedingScopes)) {
+        if (!empty($exceedingScopes['scopes'])) {
             return 2;
         }
         
@@ -48,7 +48,17 @@ final class CheckCommand extends AbstractCommand
 
     /**
      * @param list<AnalysisResult> $results
-     * @return array 閾値を超えたスコープの配列
+     * @return array{
+     *   threshold: int,
+     *   result: string,
+     *   scopes: list<array{
+     *     file: string,
+     *     filename: string,
+     *     namespace: string|null,
+     *     name: string,
+     *     variableHardUsage: int
+     *   }>
+     * } 閾値を超えたスコープの配列
      */
     protected function printResults(array $results): array
     {
@@ -86,6 +96,6 @@ final class CheckCommand extends AbstractCommand
         // 結果を表示
         echo json_encode($report, JSON_PRETTY_PRINT) . PHP_EOL;
         
-        return $exceedingScopes;
+        return $report;
     }
 }

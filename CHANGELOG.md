@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.0.7 (2025-03-25)
+
+### Features
+
+ * Added new `check` mode with threshold support for CI integration
+ * Added `--threshold` option to check mode for detecting excessive variable usage
+ * Returns exit code 2 when variable hard usage exceeds specified threshold
+ * Restructured code with ScopesTrait to improve maintainability
+
 ### Bug fix
 
  * The name of the file path information item in scopes mode is `file`, but I want to match it with `filename`, which is the name of the file path item in single mode.

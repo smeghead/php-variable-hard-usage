@@ -110,7 +110,7 @@ final class CommandFactory
             return new HelpCommand();
         }
         
-        $threshold = $parsedArgs->options['threshold'] ?? null;
+        $threshold = isset($parsedArgs->options['threshold']) ? intval($parsedArgs->options['threshold']) : null;
         
         return new CheckCommand($parsedArgs->paths, $threshold);
     }
@@ -191,7 +191,7 @@ final class CommandFactory
      * オプション文字列をパースして名前と値を取得
      * 
      * @param string $option オプション文字列
-     * @return array{0: string, 1: mixed} [オプション名, オプション値]
+     * @return array{0: string, 1: string|bool} [オプション名, オプション値]
      */
     private function parseOption(string $option): array
     {
@@ -213,7 +213,7 @@ final class ParsedArguments
 {
     /**
      * @param array<string> $paths パスのリスト
-     * @param array<string, mixed> $options オプションのマップ
+     * @param array<string, string|int|bool|null> $options オプションのマップ
      */
     public function __construct(
         public readonly array $paths,

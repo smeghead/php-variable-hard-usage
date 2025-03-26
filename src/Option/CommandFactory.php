@@ -104,7 +104,7 @@ final class CommandFactory
         }
 
         $threshold = $this->options['threshold'] ?? null;
-        if (is_numeric($threshold)) {
+        if (isset($threshold)) {
             $threshold = (int) $threshold;
         }
         

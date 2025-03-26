@@ -31,6 +31,9 @@
         ],
         "phpstan": [
             "vendor/bin/phpstan analyse"
+        ],
+        "php-variable-hard-usage": [
+            "php bin/php-variable-hard-usage check --threshold=300 src/"
         ]
     },
     "bin": [

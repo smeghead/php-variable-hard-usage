@@ -9,12 +9,13 @@ use Smeghead\PhpVariableHardUsage\Option\CommandFactory;
 final class Command
 {
     /**
+     * @param array<string, string|bool> $options
      * @param list<string> $argv
      * @return int 終了コード
      */
-    public function run(array $argv): int
+    public function run(array $options, array $argv): int
     {
-        $factory = new CommandFactory($argv);
+        $factory = new CommandFactory($options, $argv);
         $command = $factory->create();
         return $command->execute();
     }

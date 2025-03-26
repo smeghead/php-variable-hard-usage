@@ -11,7 +11,11 @@ foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php
 }
 
 use Smeghead\PhpVariableHardUsage\Command;
+use Smeghead\PhpVariableHardUsage\Option\GetOptions;
+
+$getOptions = new GetOptions($_SERVER['argv']);
+$result = $getOptions->parse();
 
 $command = new Command();
-$exitCode = $command->run($argv);
+$exitCode = $command->run($result->options, $result->paths);
 exit($exitCode);

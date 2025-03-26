@@ -40,3 +40,6 @@ jobs:
 
     - name: Run PHPStan
       run: composer run-script phpstan
+
+    - name: Run php-variable-hard-usage
+      run: composer run-script php-variable-hard-usage

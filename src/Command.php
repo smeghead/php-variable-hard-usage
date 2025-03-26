@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smeghead\PhpVariableHardUsage;
 
+use Smeghead\PhpVariableHardUsage\Option\CommandFactory;
+
 final class Command
 {
     /**
@@ -12,8 +14,8 @@ final class Command
      */
     public function run(array $argv): int
     {
-        $factory = new CommandFactory();
-        $command = $factory->createCommand($argv);
+        $factory = new CommandFactory($argv);
+        $command = $factory->create();
         return $command->execute();
     }
 }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Bug fix
+
+ * Moved command-line option parsing logic into separate classes for better maintainability
+
 ## v0.0.7 (2025-03-25)
 
 ### Features

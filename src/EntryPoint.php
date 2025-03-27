@@ -6,7 +6,7 @@ namespace Smeghead\PhpVariableHardUsage;
 
 use Smeghead\PhpVariableHardUsage\Option\CommandFactory;
 
-final class Command
+final class EntryPoint
 {
     /**
      * @param array<string, string|bool> $options

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### Features
+
+ * Change entrypoint class name.
+
 ### Bug fix
 
  * Moved command-line option parsing logic into separate classes for better maintainability

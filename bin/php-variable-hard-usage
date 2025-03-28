@@ -10,12 +10,26 @@ foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php
     }
 }
 
+use GetOpt\GetOpt;
+use GetOpt\Option;
 use Smeghead\PhpVariableHardUsage\EntryPoint;
-use Smeghead\PhpVariableHardUsage\Option\GetOptions;
 
-$getOptions = new GetOptions($_SERVER['argv']);
-$result = $getOptions->parse();
+$getOpt = new GetOpt([
+    Option::create('h', 'help', GetOpt::NO_ARGUMENT),
+    Option::create('v', 'version', GetOpt::NO_ARGUMENT),
+    Option::create('t', 'threshold', GetOpt::REQUIRED_ARGUMENT)
+        ->setValidation(function ($value) {
+            return is_numeric($value) && $value >= 0;
+        }, 'Threshold must be a number greater than or equal to 0'),
+]);
+
+try {
+    $getOpt->process();
+} catch (Exception $exception) {
+    file_put_contents('php://stderr', 'Error: ' . $exception->getMessage() . PHP_EOL);
+    exit(1);
+}
 
 $entryPoint = new EntryPoint();
-$exitCode = $entryPoint->run($result->options, $result->paths);
+$exitCode = $entryPoint->run($getOpt->options, $getOpt->operands);
 exit($exitCode);

@@ -1,8 +1,11 @@
 # CHANGELOG
 
+## v0.0.8 (2025-03-28)
+
 ### Features
 
  * Change entrypoint class name.
+ * Change method to parse aurguments, using getopt-php library.
 
 ### Bug fix
 

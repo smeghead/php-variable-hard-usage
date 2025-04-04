@@ -188,43 +188,27 @@ VariableHardUsage is an index used to evaluate the frequency of use and scope of
 
 This tool calculates the **Variable Hard Usage** score for each **scope** (i.e., a function or method) based on how local variables are used. The calculation consists of the following steps:
 
----
-
 #### 1. Extract local variables in a scope
 
 For each scope $S$, extract all local variables:
 
-$$
-V = {v_1, v_2, ..., v_m}
-$$
-
----
+$V = {v_1, v_2, ..., v_m}$
 
 #### 2. For each variable $v_j$, identify lines where it is referenced
 
 Let the variable $v_j$ be referenced at line numbers:
 
-$$
-L^{(j)} = {l^{(j)}_1, l^{(j)}_2, ..., l^{(j)}_{n_j}} \quad \text{(sorted in ascending order)}
-$$
-
----
+$`L^{(j)} = {l^{(j)}_1, l^{(j)}_2, ..., l^{(j)}_{n_j}} \quad`$
 
 #### 3. Assign weights to each reference
 
 Each reference line $l^{(j)}_i$ is assigned a weight $w^{(j)}_i$ depending on whether it is a simple read or an assignment:
 
 - If the reference is **an assignment (update)**:  
-  $$
-  w^{(j)}_i = \alpha \quad (\text{default: } \alpha = 2)
-  $$
+  $`w^{(j)}_i = \alpha \quad (\text{default: } \alpha = 2)`$
 
 - If the reference is **a read-only access**:  
-  $$
-  w^{(j)}_i = 1
-  $$
-
----
+  $`w^{(j)}_i = 1`$
 
 #### 4. Calculate Variable Hard Usage for each variable
 
@@ -232,23 +216,17 @@ Let $l^{(j)}_\text{base} = l^{(j)}_1$, the first line where $v_j$ appears.
 
 Then, the hard usage score for $v_j$ is calculated as:
 
-$$
-H(v_j) = \sum_{i=1}^{n_j} w^{(j)}_i \cdot |l^{(j)}_i - l^{(j)}_\text{base}|
-$$
+$`H(v_j) = \sum_{i=1}^{n_j} w^{(j)}_i \cdot |l^{(j)}_i - l^{(j)}_\text{base}|`$
 
 This measures how widely and intensely the variable is used, with updates having a stronger impact.
-
----
 
 #### 5. Sum all variable scores to get the score for the scope
 
 The total **Variable Hard Usage** for the scope $S$ is:
 
-$$
-H(S) = \sum_{j=1}^{m} H(v_j) = \sum_{j=1}^{m} \sum_{i=1}^{n_j} w^{(j)}_i \cdot |l^{(j)}_i - l^{(j)}_\text{base}|
-$$
+$`H(S) = \sum_{j=1}^{m} H(v_j) = \sum_{j=1}^{m} \sum_{i=1}^{n_j} w^{(j)}_i \cdot |l^{(j)}_i - l^{(j)}_\text{base}|`$
 
-A larger value of $H(S)$ indicates that variables in the scope are heavily and broadly used, which may reduce code readability and maintainability.
+A larger value of $`H(S)`$ indicates that variables in the scope are heavily and broadly used, which may reduce code readability and maintainability.
 
 ### Example
 
